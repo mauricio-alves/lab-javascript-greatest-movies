@@ -62,7 +62,15 @@ dramaMoviesScore(movies);
 
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 function orderByYear(param) {
-  const ordered = param.sort((a, b) => a.year - b.year);
+  const ordered = param
+    .map((currentTitleAndYear) => {
+      return {
+        title: currentTitleAndYear.title,
+        year: currentTitleAndYear.year
+      };
+    })
+    .sort((a, b) => a.year - b.year);
+
   const newOrder = ordered.sort((a, b) => {
     if (a.year === b.year) {
       return a.title.localeCompare(b.title);
@@ -75,20 +83,62 @@ orderByYear(movies);
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
 function orderAlphabetically(param) {
   const alphaOrder = param
-    .sort((a, b) => a.title.localeCompare(b.title))
-    .slice(0, 20)
     .map((currentTitle) => {
       return currentTitle.title;
-    });
+    })
+    .sort((a, b) => a.localeCompare(b))
+    .slice(0, 20);
+
   return alphaOrder;
 }
 orderAlphabetically(movies);
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
-function turnHoursToMinutes() {}
+function turnHoursToMinutes(param) {
+  const duration = param.map((currentDuration) => {
+    return currentDuration.duration;
+  });
+
+  let minutes = [];
+  for (let i = 0; i < duration.length; i++) {
+    const reg = /[\D_]/g;
+    minutes.push(duration[i].toString().replace(reg, ''));
+  }
+
+  let result = [];
+  for (let i = 0; i < minutes.length; i++) {
+    if (minutes[i].length === 3) {
+      result.push(
+        Number(minutes[i][0]) * 60 +
+          Number(minutes[i][1]) * 10 +
+          Number(minutes[i][2] * 1)
+      );
+    } else if (minutes[i].length === 2) {
+      result.push(Number(minutes[i][0]) * 60 + Number(minutes[i][1]) * 1);
+    } else if (minutes[i].length === 1) {
+      result.push(Number(minutes[i][0]) * 60);
+    }
+  }
+  return result;
+}
+turnHoursToMinutes(movies);
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
-function bestYearAvg() {}
+function bestYearAvg(param) {
+  if (!param.length) {
+    return null;
+  }
+  const newOrder = param
+    .map((currentScoreAndYear) => {
+      return {
+        year: currentScoreAndYear.year,
+        score: currentScoreAndYear.score
+      };
+    })
+    .sort((a, b) => b.year - a.year);
+  return console.log(newOrder);
+}
+bestYearAvg(movies);
 
 // The following is required to make unit tests work.
 /* Environment setup. Do not modify the below code. */
