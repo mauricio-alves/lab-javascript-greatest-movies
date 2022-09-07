@@ -14,6 +14,19 @@ function getAllDirectors(param) {
 }
 getAllDirectors(movies);
 
+// version 2
+function getAllDirectors(moviesArray) {
+  const allDirectors = moviesArray
+    .map((currentMovie) => {
+      return currentMovie.director;
+    })
+    .filter((currentDirector, index, sourceArray) => {
+      return sourceArray.indexOf(currentDirector) === index;
+    });
+  return allDirectors;
+}
+getAllDirectors(movies);
+
 // Iteration 2: Steven Spielberg. The best? - How many drama movies did STEVEN SPIELBERG direct?
 function howManyMovies(param) {
   const howManySpielbergMovies = param
@@ -24,6 +37,18 @@ function howManyMovies(param) {
       return currentDirector.genre.includes('Drama');
     });
   return howManySpielbergMovies.length;
+}
+howManyMovies(movies);
+
+// version 2
+function howManyMovies(moviesArray) {
+  const onlyDramaMovies = moviesArray.filter((currentMovie) => {
+    return (
+      currentMovie.genre.includes('Drama') &&
+      currentMovie.director === 'Steven Spielberg'
+    );
+  });
+  return onlyDramaMovies.length;
 }
 howManyMovies(movies);
 
@@ -38,6 +63,20 @@ function scoresAverage(param) {
   const sum = scores.reduce((a, b) => a + b, 0);
   const average = Number((sum / scores.length).toFixed(2));
   return average;
+}
+scoresAverage(movies);
+
+// version 2
+function scoresAverage(moviesArray) {
+  if (!moviesArray.length) return 0;
+
+  const scores = moviesArray.map((currentMovie) => {
+    if (!currentMovie.score) return 0;
+    return currentMovie.score;
+  });
+  const sum = scores.reduce((a, b) => a + b);
+
+  return Number((sum / scores.length).toFixed(2));
 }
 scoresAverage(movies);
 
@@ -60,6 +99,16 @@ function dramaMoviesScore(param) {
 }
 dramaMoviesScore(movies);
 
+// version 2
+function dramaMoviesScore(moviesArray) {
+  const dramaScores = moviesArray.filter((currentMovie) => {
+    return currentMovie.genre.includes("Drama");
+  });
+
+  return scoresAverage(dramaScores);
+}
+dramaMoviesScore(movies);
+
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 function orderByYear(param) {
   const ordered = param
@@ -77,6 +126,22 @@ function orderByYear(param) {
     }
   });
   return newOrder;
+}
+orderByYear(movies);
+
+// version 2
+function orderByYear(moviesArray) {
+  const ordered = moviesArray
+    .map((currentMovie) => {
+      return currentMovie;
+    })
+    .sort((a, b) => {
+      if (a.year === b.year) {
+        return a.title.localeCompare(b.title);
+      }
+      return a.year - b.year;
+    });
+  return ordered;
 }
 orderByYear(movies);
 
